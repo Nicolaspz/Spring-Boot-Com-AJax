@@ -3,11 +3,54 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- CSS -->
-    <link rel="stylesheet" th:href="@{../static/css/style.css}"/>
+    <link rel="stylesheet" href="../static/css/style.css"/>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <style>
+    
+    .corpo {  padding-top: 2rem; }
+
+.block-img {
+	max-width: 100%; 
+	height: 100%;
+	object-fit: cover;
+}
+
+
+/* https://www.w3schools.com/howto/howto_css_loader.asp */
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.pre-load {
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+}
+
+
+    
+    </style>
 </head>
 <body>
+<div class="container">
+
+
+
 
 <div class="corpo" layout:fragment="corpo"> 
 
@@ -15,7 +58,9 @@
 
     <form id="form-add-promo" action="#">
 
-        <div id="alert"></div>
+       <div class="" id="alert" role="alert">
+ 
+     </div>
 
         <div class="form-group">
             <label for="linkPromocao">Link da Oferta</label>
@@ -40,7 +85,7 @@
                     <img id="linkImagem" name="linkImagem" class="card-img-top" th:src="@{/images/promo-dark.png}"
                          width="308px"/>
                     <div class="card-body bg-light">
-                        <h5 id="site" class="card-title"></h5>
+                        <h5 id="site" class="card-title"> testando</h5>
                     </div>
                 </div>
             </div>
@@ -54,8 +99,8 @@
                 </div>
                 <div class="form-group">
                     <label for="categoria">Categoria do Produto</label>
-                    <select id="categoria" name="categoria" class="form-control">
-                        <option value="">Selecione</option>
+                    <select id="categoria" name="categoria" class="form-control" >
+                        <option value="2">Selecione</option>
                         <option th:each="c : ${categorias}" th:text="${c.titulo}" th:value="${c.id}">...</option>
                     </select>
                     <div id="error-categoria"></div>
@@ -74,10 +119,13 @@
     </form>
 
 </div>
+</div>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
-<script></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<script th:src="@{/js/promo-add.js}" th:fragment="js" ></script>
 </body>
 </html>
