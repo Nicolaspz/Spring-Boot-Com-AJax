@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -96,5 +97,14 @@ public class promocaoController {
 			
 			return "promo-card";
 		}	
+		
+		//========================ADD LIKES========================================================================================
 
+		@PostMapping("likes/{id}")
+		public ResponseEntity<?> adicionarLikes(@PathVariable("id") Long id){
+			reposi.updateSomarLikes(id);
+			int like =reposi.findLikesById(id);
+			return ResponseEntity.ok(like);// o método retorna para então inserir o like para actualizar o front via Ajax.. no success response.
+			
+		}
 }

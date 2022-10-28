@@ -30,7 +30,11 @@ function loadBtScrollBar(pageNumber){
 		success:function(response){
 			if (response.length > 150) {
 				//console.log("resposta>", response);
-			    $('.row').append( $(response).hide().fadeIn(200));
+			   // $('.row').append( $(response).hide().fadeIn(200));
+			    $(".row").fadeIn(250, function() {
+					$(this).append(response);
+					//$('.row').append( $(response).hide().fadeIn(200));
+				});
 			} else {
 				$("#fim-btn").show();
 				$("#loader-img").removeClass("loader");
@@ -46,3 +50,20 @@ function loadBtScrollBar(pageNumber){
 		}
 	})
 }
+//Adicionar Likes 
+$(document).on("click","button[id*='likes-btn-']", function(){
+	var id = $(this).attr("id").split("-")[2];
+	console.log("id:", id);
+	$.ajax({
+		method:"POST",
+		url: "/promocao/likes/" + id,
+		success:function(response){
+			
+			$("#likes-count-" + id).text(response);// actualizamos ao front com o resultado do método da url,
+		},
+		error: function(xhr){
+			alert("Ops, ocorreu um erro: " + xhr.status + "," + xhr.statusText);
+		}
+	});
+});
+
