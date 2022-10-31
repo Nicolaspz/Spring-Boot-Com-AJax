@@ -83,21 +83,34 @@ public class promocaoController {
 	@GetMapping("/list")
 	public String listarOfertas(ModelMap model) {
 		Sort sort =Sort.by(Sort.Direction.DESC,"dtCadastro");//ordenar a lista
-		PageRequest pageRequest = PageRequest.of(0, 4, sort); // colocar limite na página a cada pagina so aparece 4 elements
+		PageRequest pageRequest = PageRequest.of(0, 8, sort); // colocar limite na página a cada pagina so aparece 4 elements
 		model.addAttribute("promocoes",reposi.findAll( pageRequest));
 		return "promo-list";
 	}
 		
 		@GetMapping("/list/ajax")
-		public String listarCards(@RequestParam(name = "page", defaultValue = "1") int page, ModelMap model) {
+		public String listarCards(@RequestParam(name = "page", defaultValue = "1") int page,
+				@RequestParam(name = "site", defaultValue = "") String site,ModelMap model) {
 			
 			Sort sort =Sort.by(Sort.Direction.DESC,"dtCadastro");
-			PageRequest pageRequest = PageRequest.of(page, 4, sort);
-			model.addAttribute("promocoes", reposi.findAll(pageRequest));
+			PageRequest pageRequest = PageRequest.of(page, 8, sort);
+			if(site.isEmpty()) {
+				
+				model.addAttribute("promocoes", reposi.findAll(pageRequest));
+			}
+			else {
+				model.addAttribute("promocoes", reposi.findBySite(site, pageRequest));
+			}
+			
 			
 			return "promo-card";
 		}	
 		
+		@GetMapping("/site")
+		public ResponseEntity<?> autocompleteByTermo(@RequestParam("termo") String termo){
+				List<String> sites = reposi.findSiteByTermo(termo);
+				return ResponseEntity.ok(sites);
+		}
 		//========================ADD LIKES========================================================================================
 
 		@PostMapping("likes/{id}")
@@ -106,5 +119,13 @@ public class promocaoController {
 			int like =reposi.findLikesById(id);
 			return ResponseEntity.ok(like);// o método retorna para então inserir o like para actualizar o front via Ajax.. no success response.
 			
+		}
+		
+		@GetMapping("/site/list")
+		public String listarPorSite(@RequestParam("site") String site, ModelMap model) {
+			Sort sort =Sort.by(Sort.Direction.DESC,"dtCadastro");
+			PageRequest pageRequest = PageRequest.of(0, 8, sort);
+			model.addAttribute("promocoes", reposi.findBySite(site, pageRequest));
+			return "promo-card";
 		}
 }

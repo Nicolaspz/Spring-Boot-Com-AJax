@@ -18,11 +18,13 @@ $(window).scroll(function(){
 })
 
 function loadBtScrollBar(pageNumber){
+	var site = $("#autocomplete-input").val();
 	$.ajax({
 		method:"GET",
 		url:"/promocao/list/ajax",
 		data:{
-			page:pageNumber
+			page:pageNumber,
+			site:site,
 		},
 		beforeSend: function() {
 			$("#loader-img").show();
@@ -50,6 +52,52 @@ function loadBtScrollBar(pageNumber){
 		}
 	})
 }
+
+
+//================================AutoComplete=====================================================
+
+$("#autocomplete-input").autocomplete({
+	source: function(request, response){
+		$.ajax({
+			method:"GET",
+			url:"/promocao/site",
+			data:{
+				termo:request.term
+			},
+			success: function(result){
+				response(result);
+			}
+		})
+	}
+})
+
+$("#autocomplete-submit").on("click", function() {
+	var site = $("#autocomplete-input").val();
+	$.ajax({
+		method: "GET",
+		url: "/promocao/site/list",
+		data: {
+			site : site
+		},
+		beforeSend: function() {
+			pageNumber = 0;
+			$("#fim-btn").hide();
+			$(".row").fadeOut(400, function(){
+				$(this).empty();
+			});
+		},
+		success: function(response) {
+			$(".row").fadeIn(250, function(){
+				$(this).append(response);
+			});
+		},
+		error: function(xhr) {
+			alert("Ops, algo deu errado: " + xhr.status + ", " + xhr.statusText);
+		}
+	});
+});
+
+
 //Adicionar Likes 
 $(document).on("click","button[id*='likes-btn-']", function(){
 	var id = $(this).attr("id").split("-")[2];
